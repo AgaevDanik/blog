@@ -1,6 +1,8 @@
 from django.db import models
 from django.shortcuts import reverse
 
+from django.utils.text import slugify
+
 
 class Post(models.Model):
     title = models.CharField(max_length=150, db_index=True)
