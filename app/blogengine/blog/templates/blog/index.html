@@ -6,7 +6,36 @@
 
 {% block content %}
     <h1 class="mb-5">Posts:</h1>
-    {% for post in posts %}
+    {% for post in page_object %}
         {% include 'blog/includes/post_card_template.html'%}
     {% endfor %}
+    {% if is_paginated %}
+        <nav aria-label="...">
+          <ul class="pagination">
+            <li class="page-item {% if not prev_url %}disabled{% endif %}">
+              <a class="page-link" href="{{ prev_url }}" tabindex="-1" aria-disabled="true">Previous</a>
+            </li>
+
+
+            {% for num in page_object.paginator.page_range %}
+                {% if page_object.number == num %}
+                    <li class="page-item active" aria-current="page">
+                         <a class="page-link" href="?page={{ num }}">
+                             {{ num }}<span class="sr-only">(current)</span></a>
+                    </li>
+                {% elif num > page_object.number|add:-3 and num < page_object.number|add:3 %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ num }}">
+                            {{ num }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            <li class="page-item {% if not next_url %}disabled{% endif %}">
+              <a class="page-link" href="{{ next_url }}">Next</a>
+            </li>
+          </ul>
+        </nav>
+    {% endif %}
 {% endblock %}
